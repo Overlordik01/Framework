@@ -1,6 +1,6 @@
 package org.framework.Generators;
 
-import org.framework.Interfaces.GeneratorRealisation;
+import org.framework.Interface.GeneratorRealisation;
 import org.springframework.stereotype.Controller;
 
 @Controller
