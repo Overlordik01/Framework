@@ -8,9 +8,9 @@ import java.util.List;
 @Repository
 public interface JobDAO {
     public List<Job> findAll();
-    public Job findJobById(Long id);
-    public String getStatusById(Long id);
+    public Job findJobById(Long jobid);
+    public String getStatusById(Long jobid);
     public Long insertNewJob(Job job);
-    public String updateStatusById(Long jobid);
+    public String updateStatusById(Long jobid,String status);
     public void delete(Job job);
 }

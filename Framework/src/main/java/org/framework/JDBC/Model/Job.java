@@ -11,6 +11,11 @@ public class Job {
 
     }
 
+    public Job(String type, int version, String status){
+        this.type = type;
+        this.version = version;
+        this.status = status;
+    }
     public Job(long jobid, String type, int version, String status) {
         this.jobid = jobid;
         this.type = type;

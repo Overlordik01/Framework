@@ -1,4 +1,4 @@
-package org.framework.Annotation;
+package org.framework.Generators.Annotation;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

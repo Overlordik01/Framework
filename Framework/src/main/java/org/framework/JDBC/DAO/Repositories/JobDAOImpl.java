@@ -51,10 +51,10 @@ public class JobDAOImpl implements JobDAO {
         return (Long)keyHolder.getKey();
     }
 
-    public String updateStatusById(Long jobid) {
-        sql = "UPDATE job SET status=CANCELLED WHERE jobid=?";
-        jdbcTemplate.update(sql,new Object[]{},new JobMapper());
-        return "CANCELLED";
+    public String updateStatusById(Long jobid,String status) {
+        sql = "UPDATE job SET status=? WHERE jobid=?";
+        jdbcTemplate.update(sql,new Object[]{status,jobid},new JobMapper());
+        return status;
     }
 
     public void delete(Job job) {

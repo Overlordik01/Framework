@@ -1,4 +1,4 @@
-package org.framework.Interface;
+package org.framework.Generators.Interface;
 
 public interface GeneratorRealisation {
     void toGenerateReport();

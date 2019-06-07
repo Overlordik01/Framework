@@ -2,6 +2,7 @@ package DataBaseTest;
 
 import org.framework.Application;
 import org.framework.JDBC.DAO.JobDAO;
+import org.framework.JDBC.Model.Job;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ public class JobDAOTest {
 
     @Test
     public void testInsertJob_thenCorrect() {
-
+        Job job = new Job("type1",1,"CANCCELED");
+        jobDAO.insertNewJob(job);
     }
 }
