@@ -26,11 +26,16 @@ public class JobDAOImpl implements JobDAO {
         return jdbcTemplate.query(sql,new JobMapper());
     }
 
-    public Job findJobById(Long jobid){
-        sql = "SELECT * FROM job WHERE jobid=?";
-        Job job = jdbcTemplate.queryForObject(sql,new Object[]{jobid},new JobMapper());
-        return job;
-    };
+    public Boolean findJobById(Long jobid){
+        try {
+            sql = "SELECT * FROM job WHERE jobid=?";
+            Job job = jdbcTemplate.queryForObject(sql, new Object[]{jobid}, new JobMapper());
+            return true;
+        }
+        catch (NullPointerException ex){
+            return false;
+        }
+    }
 
     public String getStatusById(Long jobid) {
         sql = "SELECT status FROM job WHERE jobid=?";

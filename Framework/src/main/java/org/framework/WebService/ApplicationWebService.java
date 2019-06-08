@@ -3,18 +3,16 @@ package org.framework.WebService;
 import org.framework.Application;
 import org.framework.JDBC.DAO.JobDAO;
 import org.framework.JDBC.Model.Job;
-import org.framework.Form.Model.Keymodel;
 import org.framework.WebService.JSONModel.Report;
 import org.framework.WebService.JSONModel.Status;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.framework.Generators.Annotation.ConfigurationInfo;
 
-import javax.validation.Valid;
-import java.lang.reflect.Method;
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 
 @RestController
@@ -23,20 +21,19 @@ public class ApplicationWebService {
     @Autowired
     private JobDAO jobDAO;
 
-    private HashMap<Integer,String> collect = Application.getCollection();
-
     @Async
     @RequestMapping("/toGenerateReport")
-    public Report toGenerateReport(@Valid @ModelAttribute("Keymodel")Keymodel keymodel){
+    public Report toGenerateReport(HttpServletRequest request){
+        Application app = new Application();
+        HashMap<Integer,String> collect = app.getCollection();
         try{
-            System.out.println(keymodel.getKeyId());
-            if(keymodel.getKeyId()!=0) {
-                Class<?> generateClass = Class.forName(collect.get(keymodel.getKeyId()));
+            if((int)request.getSession().getAttribute("keyId")!=0) {
+                Class<?> generateClass = Class.forName(collect.get(request.getSession().getAttribute("keyId")));
                 ConfigurationInfo confClass = generateClass.getAnnotation(ConfigurationInfo.class);
                 long jobid = jobDAO.insertNewJob(new Job(confClass.type(), confClass.version(), "IN_PROGRESS"));
-                Method method = generateClass.getMethod("toGenerateReport");
+                /*Method method = generateClass.getMethod("toGenerateReport");
                 method.invoke(generateClass);
-                jobDAO.updateStatusById(jobid, "COMPLETE");
+                jobDAO.updateStatusById(jobid, "COMPLETE");*/
                 return new Report(0, "REPORT_GENERATION_STARTED", jobid);
             }
             else {
@@ -52,9 +49,12 @@ public class ApplicationWebService {
     }
     @Async
     @RequestMapping("/toCheckTheStatusOfReportGeneration")
-    public Status toCheckTheStatusOfReportGeneration(@Valid @ModelAttribute("Keymodel")Keymodel keymodel){
+    public Status toCheckTheStatusOfReportGeneration(HttpServletRequest request){
         try {
-            return new Status(jobDAO.getStatusById(keymodel.getJobId()));
+            return new Status(jobDAO.getStatusById((long)request.getSession().getAttribute("jobId")));
+        }
+        catch (EmptyResultDataAccessException | NullPointerException ex){
+            return new Status("JOB_NOT_FOUND");
         }
         catch (Exception ex){
             return new Status("FAILED");
@@ -63,14 +63,13 @@ public class ApplicationWebService {
 
     @Async
     @RequestMapping("/toCancelReportGeneration")
-    public Status toCancelReportGeneration(@Valid @ModelAttribute("Keymodel")Keymodel keymodel){
+    public Status toCancelReportGeneration(HttpServletRequest request){
         try {
-            if(keymodel.getJobId()!=0) {
-                return new Status(jobDAO.updateStatusById(keymodel.getJobId(),"CANCELLED"));
-            }
-            else{
-                return new Status("JOB_NOT_FOUND");
-            }
+            jobDAO.findJobById((long)request.getSession().getAttribute("jobId"));
+            return new Status(jobDAO.updateStatusById((long)request.getSession().getAttribute("jobId"),"CANCELLED"));
+        }
+        catch (EmptyResultDataAccessException | NullPointerException ex){
+            return new Status("JOB_NOT_FOUND");
         }
         catch (Exception ex){
             return new Status("FAILED");
@@ -79,7 +78,8 @@ public class ApplicationWebService {
 
     @Async
     @RequestMapping("/toDownloadTheReport")
-    public void toDownloadTheReport(){
+    public void toDownloadTheReport(HttpServletRequest request){
+        System.out.println((int)request.getSession().getAttribute("jobId"));
 
     }
 }

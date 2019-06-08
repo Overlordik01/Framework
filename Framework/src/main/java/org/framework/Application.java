@@ -17,15 +17,10 @@ public class Application{
 
     private static final Logger log = LoggerFactory.getLogger(Application.class);
 
-    private static HashMap<Integer,String> collection = new HashMap();
-
-    public static HashMap<Integer, String> getCollection() {
-        return collection;
-    }
+    private static LinkedHashMap<Integer,String> collection = new LinkedHashMap<Integer,String>();
 
     public static void main(String[] args) {
-        SpringApplication.run(Application.class);
-        HashMap<Integer,String> collection = new HashMap();
+        SpringApplication.run(Application.class,args);
         ClassPathScanningCandidateComponentProvider scanner =
                 new ClassPathScanningCandidateComponentProvider(false);
         int count = 0;
@@ -39,5 +34,9 @@ public class Application{
         for(String item:collect){
             collection.put(++count, item);
         }
+    }
+
+    public static LinkedHashMap<Integer, String> getCollection() {
+        return collection;
     }
 }

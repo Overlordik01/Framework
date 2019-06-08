@@ -1,0 +1,20 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Handling Form Submission</title>
+    <meta http-equiv="Content-Type" jobId="text/html; charset=UTF-8" />
+</head>
+<body>
+<h1>Result</h1>
+<!--/*@thymesVar id="operationValue" type="org.framework.Controller.OperationValue"*/-->
+<p th:text="'keyId: ' + ${operationValue.getKeyId()}" />
+<p th:text="'jobId: ' + ${operationValue.getJobId()}" />
+<a href="/operationValue">Submit another message</a>
+<div>
+    <p><a href="/toGenerateReport">Генерация отчета</a></p>
+    <p><a href="/toCheckTheStatusOfReportGeneration">Проверка статуса отчета</a></p>
+    <p><a href="/toCancelReportGeneration">Отмена генерации отчета</a></p>
+    <p><a href="/toDownloadTheReport">Скачать сгенерированный отчет</a></p>
+</div>
+</body>
+</html>
