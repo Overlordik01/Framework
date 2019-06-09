@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Handling Form Submission</title>
+    <meta http-equiv="Content-Type" jobId="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <link href="webjars/bootstrap/4.3.1/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <script th:src="@{/jquery/jquery.min.js}"></script>
+    <script th:src="@{/popper/popper.min.js}"></script>
+    <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+
+</head>
+<body>
+<div>
+<h1>Result</h1>
+<!--/*@thymesVar id="operationValue" type="org.framework.Controller.OperationValue"*/-->
+<p th:text="'keyId: ' + ${operationValue.getKeyId()}" />
+<p th:text="'jobId: ' + ${operationValue.getJobId()}" />
+</div>
+<div>
+<a href="/operationValue">Submit another message</a>
+</div>
+<div class="btn-group">
+    <p><a href="/toGenerateReport"><button type="button" class="btn btn-success">Generate Report</button></a></p>
+    <p><a href="/toCheckTheStatusOfReportGeneration"><button type="button" class="btn btn-success">Check the status of report generation</button></a></p>
+    <p><a href="/toCancelReportGeneration"><button type="button" class="btn btn-success">Cancel report generation</button></a></p>
+    <p><a href="/toDownloadTheReport"><button type="button" class="btn btn-success">Download the report</button></a></p>
+</div>
+</body>
+</html>
